@@ -9,10 +9,10 @@
 | STT | Họ và Tên | Mã Sinh Viên | Lớp Sinh Hoạt | Vai Trò | Nhiệm Vụ Phân Công | Đóng Góp (%) | Email |
 | :-: | --------- | ------------ | ------------- | ------- | ------------------ | :----------: | ----- |
 | 1 | Phạm Văn Việt | 2351170633 | 65KTPM | Trưởng nhóm | *(Đang cập nhật)* | *(Đang cập nhật)* | pvv210805@gmail.com |
-| 2 | Nguyễn Hoàng Anh | 2251161939 | 64HTTT1 | Thành viên | *(Đang cập nhật)* | *(Đang cập nhật)* | *(Đang cập nhật)* |
-| 3 | Phùng Thành An | 2251061692 | 64CNTT2 | Thành viên | *(Đang cập nhật)* | *(Đang cập nhật)* | *(Đang cập nhật)* |
-| 4 | Võ Mạnh Thắng | 2351170620 | 65KTPM | Thành viên | *(Đang cập nhật)* | *(Đang cập nhật)* | *(Đang cập nhật)* |
-| 5 | Đặng Xuân Minh | 2251172421 | 64KTPM4 | Thành viên | *(Đang cập nhật)* | *(Đang cập nhật)* | *(Đang cập nhật)* |
+| 2 | Nguyễn Hoàng Anh | 2251161939 | 64HTTT1 | Thành viên | *(Đang cập nhật)* | *(Đang cập nhật)* | hoanganhh6102004@gmail.com |
+| 3 | Phùng Thành An | 2251061692 | 64CNTT2 | Thành viên | *(Đang cập nhật)* | *(Đang cập nhật)* | Phungthanhan257@gmail.com |
+| 4 | Võ Mạnh Thắng | 2351170620 | 65KTPM | Thành viên | *(Đang cập nhật)* | *(Đang cập nhật)* | Thangvm515@gmail.com |
+| 5 | Đặng Xuân Minh | 2251172421 | 64KTPM4 | Thành viên | *(Đang cập nhật)* | *(Đang cập nhật)* | minh76720@gmail.com |
 
 ## Hướng Dẫn Thiết Lập Môi Trường Và Khởi Chạy Ứng Dụng
 
