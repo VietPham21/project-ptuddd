@@ -8,7 +8,7 @@ Kho lưu trữ này được thiết lập để quản lý và thu thập mã n
 
 Mỗi nhóm sinh viên bắt buộc phải tạo duy nhất một thư mục riêng biệt tại cấp cao nhất (root) của kho lưu trữ.
 
-### 1.1. Cấu trúc định danh thư mục
+### 1.1. Cấu trúc định danh thư mục:
 - **Cú pháp quy định:** `<ten-nhom>-<ten-lop>`
 - **Ví dụ chuẩn:**
   - Nhóm 01 lớp DHTI15A1HN: `nhom01-dhti15a1hn`
