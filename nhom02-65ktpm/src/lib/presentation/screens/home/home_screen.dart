@@ -1,166 +1,280 @@
 import 'package:flutter/material.dart';
-import '../../../core/constants/app_constants.dart';
 
+import '../../../application/meal_queries.dart';
+import '../../../application/meal_trash_actions.dart';
+import '../../../application/relog_meal.dart';
+import '../../../application/session_service.dart';
+import '../../../core/constants/app_constants.dart';
+import '../../../core/di/injection_container.dart';
+import '../../../core/result.dart';
+import '../../../core/strings/app_strings.dart';
+import '../../../core/strings/diary_strings.dart';
+import '../../../core/strings/home_strings.dart';
+import '../../../domain/entities/favorite_food.dart';
+import '../../../domain/entities/meal.dart';
+import '../../../domain/enums.dart';
+import '../../../domain/rules/vn_calendar.dart';
+import '../../widgets/disclaimer_note.dart';
+import '../../widgets/empty_state.dart';
+import '../../widgets/meal_card.dart';
+import '../../widgets/shimmer_box.dart';
+import '../challenge/challenge_section.dart';
+import '../relog/relog_screen.dart';
+import '../review/review_meal_screen.dart';
+import '../scan/scan_options_sheet.dart';
+
+/// Trang chủ: lời chào, tóm tắt hôm nay, thử thách tuần, 3 bữa gần nhất, "Ăn lại".
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final session = sl<SessionService>();
     final theme = Theme.of(context);
-
     return Scaffold(
-      appBar: AppBar(
-        title: const Text(AppConstants.appName),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.notifications_outlined),
-            onPressed: () {},
-            tooltip: 'Thông báo',
-          ),
-          IconButton(
-            icon: const Icon(Icons.person_outline),
-            onPressed: () {},
-            tooltip: 'Hồ sơ',
-          ),
-        ],
-      ),
+      appBar: AppBar(title: const Text(AppConstants.appName)),
       body: ListView(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.fromLTRB(16, 8, 16, 96),
         children: [
-          // Banner giới thiệu nhóm & đề tài
-          Card(
-            color: theme.colorScheme.primaryContainer.withAlpha(80),
-            child: Padding(
-              padding: const EdgeInsets.all(16),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    children: [
-                      Icon(Icons.health_and_safety_rounded, color: theme.colorScheme.primary),
-                      const SizedBox(width: 8),
-                      Text(
-                        'Dự Án Cuối Kỳ',
-                        style: theme.textTheme.labelLarge?.copyWith(
-                          color: theme.colorScheme.primary,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 8),
-                  Text(
-                    'NutriTrack AI',
-                    style: theme.textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold),
-                  ),
-                  const SizedBox(height: 4),
-                  Text(
-                    'Kiến trúc Layered Architecture (Presentation - Application - Domain - Data). Cấu hình Dependency Injection với GetIt.',
-                    style: theme.textTheme.bodySmall,
-                  ),
-                ],
-              ),
+          // Lời chào cập nhật ngay khi đổi tên/mục tiêu trong Hồ sơ.
+          ListenableBuilder(
+            listenable: session,
+            builder: (context, _) => Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  HomeStrings.greeting(session.profile?.displayName ?? ''),
+                  style: theme.textTheme.headlineSmall?.copyWith(fontWeight: FontWeight.bold),
+                ),
+                Text(
+                  HomeStrings.goalLine(AppStrings.goal(session.goal)),
+                  style: theme.textTheme.bodyMedium
+                      ?.copyWith(color: theme.colorScheme.onSurfaceVariant),
+                ),
+              ],
             ),
           ),
-          const SizedBox(height: 20),
-
-          Text(
-            'Phân Hệ Chức Năng Dự Án',
-            style: theme.textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
-          ),
-          const SizedBox(height: 12),
-
-          // Danh sách các module phân công theo từng thành viên
-          _buildFeatureCard(
-            context: context,
-            title: '1. Quét Món Ăn Bằng Gemini AI',
-            subtitle: 'Chụp ảnh món ăn, phân tích dinh dưỡng & màn hình xác nhận',
-            assignee: 'Phùng Thành An (Issue #7)',
-            icon: Icons.camera_alt_outlined,
-            color: Colors.teal,
-          ),
-          _buildFeatureCard(
-            context: context,
-            title: '2. Nhật Ký Ăn Uống & Ăn Lại',
-            subtitle: 'Theo dõi 4 bữa ăn hằng ngày, xóa mềm Tombstone kèm Undo',
-            assignee: 'Phùng Thành An (Issue #5)',
-            icon: Icons.menu_book_rounded,
-            color: Colors.green,
-          ),
-          _buildFeatureCard(
-            context: context,
-            title: '3. Tài Khoản & Mục Tiêu',
-            subtitle: 'Đăng ký, đăng nhập Firebase Auth, chọn mục tiêu ban đầu',
-            assignee: 'Nguyễn Hoàng Anh (Issue #4)',
-            icon: Icons.person_rounded,
-            color: Colors.blue,
-          ),
-          _buildFeatureCard(
-            context: context,
-            title: '4. Gợi Ý & Gọi Món Thông Minh',
-            subtitle: 'Tips khoa học theo mục tiêu và quét thực đơn quán ăn',
-            assignee: 'Nguyễn Hoàng Anh (Issue #8)',
-            icon: Icons.tips_and_updates_outlined,
-            color: Colors.amber.shade800,
-          ),
-          _buildFeatureCard(
-            context: context,
-            title: '5. Thống Kê Thói Quen (fl_chart)',
-            subtitle: 'Biểu đồ trực quan và báo cáo tiến bộ so sánh theo tuần',
-            assignee: 'Võ Mạnh Thắng (Issue #9)',
-            icon: Icons.bar_chart_rounded,
-            color: Colors.purple,
-          ),
-          _buildFeatureCard(
-            context: context,
-            title: '6. Thử Thách & Nhắc Nhở',
-            subtitle: 'Chuỗi Streak thói quen và thông báo cục bộ đúng giờ',
-            assignee: 'Đặng Xuân Minh (Issue #10)',
-            icon: Icons.emoji_events_outlined,
-            color: Colors.orange,
-          ),
+          const SizedBox(height: 16),
+          const _TodaySummary(),
+          const SizedBox(height: 16),
+          const ChallengeSection(),
+          const SizedBox(height: 16),
+          const _RelogShortcut(),
+          const SizedBox(height: 8),
+          const _RecentMeals(),
+          const SizedBox(height: 16),
+          const DisclaimerNote(full: true),
         ],
       ),
     );
   }
+}
 
-  Widget _buildFeatureCard({
-    required BuildContext context,
-    required String title,
-    required String subtitle,
-    required String assignee,
-    required IconData icon,
-    required Color color,
-  }) {
+/// Tóm tắt hôm nay: số bữa, đồ uống nhiều đường, bữa có rau (định nghĩa như mục 7.1).
+class _TodaySummary extends StatefulWidget {
+  const _TodaySummary();
+
+  @override
+  State<_TodaySummary> createState() => _TodaySummaryState();
+}
+
+class _TodaySummaryState extends State<_TodaySummary> {
+  late final Stream<List<Meal>> _stream =
+      sl<MealQueries>().watchDay(VnCalendar.vnDateOf(DateTime.now()));
+
+  @override
+  Widget build(BuildContext context) {
+    return StreamBuilder<List<Meal>>(
+      stream: _stream,
+      builder: (context, snapshot) {
+        if (!snapshot.hasData) return const ShimmerBox(height: 96);
+        final meals = snapshot.data!;
+        final sugary = meals
+            .expand((m) => m.items)
+            .where((i) => i.category == FoodCategory.drink && i.levels.sugar == Level.high)
+            .length;
+        final veg = meals.where((m) => m.items.any((i) => i.levels.veg != Level.low)).length;
+        return Card(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 8),
+            child: Row(
+              children: [
+                _SummaryItem(
+                    icon: Icons.restaurant, label: HomeStrings.mealsToday, value: meals.length),
+                _SummaryItem(
+                    icon: Icons.local_cafe_outlined,
+                    label: HomeStrings.sugaryDrinksToday,
+                    value: sugary),
+                _SummaryItem(icon: Icons.eco_outlined, label: HomeStrings.vegMealsToday, value: veg),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+}
+
+class _SummaryItem extends StatelessWidget {
+  const _SummaryItem({required this.icon, required this.label, required this.value});
+
+  final IconData icon;
+  final String label;
+  final int value;
+
+  @override
+  Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    return Card(
-      margin: const EdgeInsets.only(bottom: 12),
-      child: ListTile(
-        leading: CircleAvatar(
-          backgroundColor: color.withAlpha(40),
-          child: Icon(icon, color: color),
-        ),
-        title: Text(title, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 14)),
-        subtitle: Column(
+    return Expanded(
+      child: Column(
+        children: [
+          Icon(icon, color: theme.colorScheme.primary),
+          const SizedBox(height: 6),
+          Text('$value', style: theme.textTheme.headlineSmall?.copyWith(fontWeight: FontWeight.bold)),
+          Text(label, textAlign: TextAlign.center, style: theme.textTheme.bodySmall),
+        ],
+      ),
+    );
+  }
+}
+
+/// Lối tắt "Ăn lại": các món hay ăn, chạm 1 lần để ghi lại.
+class _RelogShortcut extends StatefulWidget {
+  const _RelogShortcut();
+
+  @override
+  State<_RelogShortcut> createState() => _RelogShortcutState();
+}
+
+class _RelogShortcutState extends State<_RelogShortcut> {
+  late final Stream<List<FavoriteFood>> _stream = sl<MealQueries>().watchFavorites();
+
+  void _relog(FavoriteFood favorite) {
+    final messenger = ScaffoldMessenger.of(context)..hideCurrentSnackBar();
+    switch (sl<RelogMeal>()(favorite)) {
+      case Ok(:final value):
+        messenger.showSnackBar(SnackBar(
+          content: Text(RelogStrings.logged(favorite.name)),
+          action: SnackBarAction(
+            label: AppStrings.undo,
+            onPressed: () => sl<MealTrashActions>().deleteForever(value),
+          ),
+        ));
+      case Err(:final failure):
+        messenger.showSnackBar(SnackBar(content: Text(failure.message)));
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return StreamBuilder<List<FavoriteFood>>(
+      stream: _stream,
+      builder: (context, snapshot) {
+        final favorites = snapshot.data ?? const <FavoriteFood>[];
+        if (favorites.isEmpty) return const SizedBox.shrink();
+        return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const SizedBox(height: 2),
-            Text(subtitle, style: theme.textTheme.bodySmall),
-            const SizedBox(height: 4),
-            Container(
-              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
-              decoration: BoxDecoration(
-                color: color.withAlpha(25),
-                borderRadius: BorderRadius.circular(6),
-              ),
-              child: Text(
-                'Phụ trách: $assignee',
-                style: TextStyle(fontSize: 11, fontWeight: FontWeight.w600, color: color),
+            _SectionHeader(
+              title: HomeStrings.relogShortcut,
+              action: HomeStrings.seeAll,
+              onAction: () => Navigator.of(context)
+                  .push(MaterialPageRoute(builder: (_) => const RelogScreen())),
+            ),
+            SizedBox(
+              height: 44,
+              child: ListView.separated(
+                scrollDirection: Axis.horizontal,
+                itemCount: favorites.length.clamp(0, 8),
+                separatorBuilder: (_, _) => const SizedBox(width: 8),
+                itemBuilder: (context, index) {
+                  final f = favorites[index];
+                  return ActionChip(
+                    avatar: Icon(RelogScreen.categoryIcon(f.category), size: 18),
+                    label: Text(f.name),
+                    onPressed: () => _relog(f),
+                  );
+                },
               ),
             ),
           ],
+        );
+      },
+    );
+  }
+}
+
+/// 3 bữa gần nhất.
+class _RecentMeals extends StatefulWidget {
+  const _RecentMeals();
+
+  @override
+  State<_RecentMeals> createState() => _RecentMealsState();
+}
+
+class _RecentMealsState extends State<_RecentMeals> {
+  late final Stream<List<Meal>> _stream = sl<MealQueries>().watchRecent(limit: 3);
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        const _SectionHeader(title: HomeStrings.recentMeals),
+        StreamBuilder<List<Meal>>(
+          stream: _stream,
+          builder: (context, snapshot) {
+            if (!snapshot.hasData) {
+              return const Column(children: [ShimmerBox(), ShimmerBox()]);
+            }
+            final meals = snapshot.data!;
+            if (meals.isEmpty) {
+              return EmptyState(
+                icon: Icons.ramen_dining_outlined,
+                title: HomeStrings.noMealsYet,
+                message: HomeStrings.noMealsHint,
+                actionLabel: HomeStrings.scanFirst,
+                onAction: () => ScanOptionsSheet.show(context),
+              );
+            }
+            return Column(
+              children: [
+                for (final meal in meals)
+                  MealCard(
+                    meal: meal,
+                    showDate: true,
+                    onTap: () => ReviewMealScreen.openExisting(context, meal),
+                  ),
+              ],
+            );
+          },
         ),
-        isThreeLine: true,
+      ],
+    );
+  }
+}
+
+class _SectionHeader extends StatelessWidget {
+  const _SectionHeader({required this.title, this.action, this.onAction});
+
+  final String title;
+  final String? action;
+  final VoidCallback? onAction;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 8, top: 4),
+      child: Row(
+        children: [
+          Expanded(
+            child: Text(
+              title,
+              style: Theme.of(context).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
+            ),
+          ),
+          if (action != null) TextButton(onPressed: onAction, child: Text(action!)),
+        ],
       ),
     );
   }
