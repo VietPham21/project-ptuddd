@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 
 import '../../../core/strings/app_strings.dart';
+import '../diary/diary_screen.dart';
 import '../home/home_screen.dart';
 import '../profile/profile_screen.dart';
+import '../scan/scan_options_sheet.dart';
 import 'placeholder_tab.dart';
 
 /// Khung chính sau khi đăng nhập: 4 tab + nút Quét nổi ở giữa.
@@ -19,16 +21,12 @@ class _MainShellState extends State<MainShell> {
   // Mỗi phân hệ thay placeholder tương ứng bằng màn hình thật.
   static const List<Widget> _tabs = [
     HomeScreen(),
-    PlaceholderTab(title: AppStrings.tabDiary, icon: Icons.menu_book_outlined),
+    DiaryScreen(),
     PlaceholderTab(title: AppStrings.tabReport, icon: Icons.bar_chart_outlined),
     ProfileScreen(),
   ];
 
-  void _onScanPressed() {
-    ScaffoldMessenger.of(context)
-      ..hideCurrentSnackBar()
-      ..showSnackBar(const SnackBar(content: Text(AppStrings.comingSoon)));
-  }
+  void _onScanPressed() => ScanOptionsSheet.show(context);
 
   @override
   Widget build(BuildContext context) {
