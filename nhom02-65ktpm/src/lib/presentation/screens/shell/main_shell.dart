@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../../core/strings/app_strings.dart';
 import '../home/home_screen.dart';
+import '../profile/profile_screen.dart';
 import 'placeholder_tab.dart';
 
 /// Khung chính sau khi đăng nhập: 4 tab + nút Quét nổi ở giữa.
@@ -20,7 +21,7 @@ class _MainShellState extends State<MainShell> {
     HomeScreen(),
     PlaceholderTab(title: AppStrings.tabDiary, icon: Icons.menu_book_outlined),
     PlaceholderTab(title: AppStrings.tabReport, icon: Icons.bar_chart_outlined),
-    PlaceholderTab(title: AppStrings.tabProfile, icon: Icons.person_outline),
+    ProfileScreen(),
   ];
 
   void _onScanPressed() {
