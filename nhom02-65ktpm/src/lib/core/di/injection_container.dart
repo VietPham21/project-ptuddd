@@ -6,6 +6,7 @@ import 'package:google_sign_in/google_sign_in.dart';
 
 import '../../application/analyze_food_text.dart';
 import '../../application/analyze_meal_photo.dart';
+import '../../application/analyze_menu_photo.dart';
 import '../../application/confirm_and_save_meal.dart';
 import '../../application/meal_events.dart';
 import '../../application/meal_queries.dart';
@@ -18,6 +19,7 @@ import '../../application/tips_cache.dart';
 import '../../data/ai/ai_analysis_service.dart';
 import '../../data/ai/gemini_client.dart';
 import '../../data/ai/image_preparer.dart';
+import '../../data/ai/menu_analysis_service.dart';
 import '../../data/ai/rate_limiter.dart';
 import '../../data/auth/firebase_auth_repository.dart';
 import '../../data/firestore/firestore_favorite_repository.dart';
@@ -63,6 +65,7 @@ Future<void> initDependencies() async {
   sl.registerLazySingleton<GeminiClient>(() => GeminiClient(sl(), sl()));
   sl.registerLazySingleton<AiAnalysisService>(() => AiAnalysisService(sl()));
   sl.registerLazySingleton<ImagePreparer>(() => ImagePreparer());
+  sl.registerLazySingleton<MenuAnalysisService>(() => MenuAnalysisService(sl()));
 
   // -------------------------------------------------------------
   // 3. Application Use Cases
@@ -76,6 +79,7 @@ Future<void> initDependencies() async {
   sl.registerLazySingleton<MealTrashActions>(() => MealTrashActions(sl(), sl(), sl()));
   sl.registerLazySingleton<AnalyzeMealPhoto>(() => AnalyzeMealPhoto(sl(), sl(), sl(), sl()));
   sl.registerLazySingleton<AnalyzeFoodText>(() => AnalyzeFoodText(sl(), sl(), sl(), sl()));
+  sl.registerLazySingleton<AnalyzeMenuPhoto>(() => AnalyzeMenuPhoto(sl(), sl(), sl()));
 
   // -------------------------------------------------------------
   // 4. State / Services dùng chung (ChangeNotifier)
