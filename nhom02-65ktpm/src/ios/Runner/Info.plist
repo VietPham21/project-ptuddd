@@ -66,5 +66,9 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
+	<key>NSCameraUsageDescription</key>
+	<string>NutriTrack AI cần camera để chụp món ăn và thực đơn. Ảnh chỉ dùng để phân tích, không được lưu lại.</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>NutriTrack AI cần truy cập thư viện ảnh để chọn ảnh món ăn hoặc thực đơn cần phân tích.</string>
 </dict>
 </plist>

@@ -46,3 +46,8 @@ app.*.map.json
 
 # Widget Preview related
 .widget_preview/
+
+# NutriTrack AI - không commit khóa bí mật / thư viện Node
+*serviceAccount*.json
+service-account*.json
+tools/**/node_modules/
