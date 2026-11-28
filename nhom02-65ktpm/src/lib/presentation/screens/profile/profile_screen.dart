@@ -4,10 +4,12 @@ import '../../../application/session_service.dart';
 import '../../../core/di/injection_container.dart';
 import '../../../core/strings/app_strings.dart';
 import '../../../core/strings/auth_strings.dart';
+import '../../../core/strings/menu_strings.dart';
 import '../../../domain/entities/user_profile.dart';
 import '../../../domain/enums.dart';
 import '../../widgets/goal_option_tile.dart';
 import '../../widgets/reminder_times_editor.dart';
+import '../tips/goal_tips_screen.dart';
 
 /// Hồ sơ: mục tiêu, giờ nhắc, giao diện, đăng xuất, miễn trừ trách nhiệm.
 /// Mọi thay đổi được lưu ngay vào Firestore (users/{uid}).
@@ -116,6 +118,16 @@ class _ProfileBody extends StatelessWidget {
             subtitle: Text(AppStrings.goalDescription(profile.goal)),
             trailing: const Icon(Icons.chevron_right),
             onTap: () => _pickGoal(context),
+          ),
+        ),
+        Card(
+          child: ListTile(
+            leading: Icon(Icons.lightbulb_outline, color: theme.colorScheme.secondary),
+            title: const Text(MenuStrings.goalTipsEntry),
+            subtitle: const Text(MenuStrings.goalTipsEntrySub),
+            trailing: const Icon(Icons.chevron_right),
+            onTap: () => Navigator.of(context)
+                .push(MaterialPageRoute(builder: (_) => const GoalTipsScreen())),
           ),
         ),
         const SizedBox(height: 16),

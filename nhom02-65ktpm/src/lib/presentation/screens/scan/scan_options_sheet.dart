@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 
 import '../../../core/strings/diary_strings.dart';
+import '../../../core/strings/menu_strings.dart';
 import '../../../core/strings/scan_strings.dart';
 import '../../../data/ai/image_preparer.dart';
+import '../menu/menu_scan_screen.dart';
 import '../relog/relog_screen.dart';
 import '../review/review_meal_screen.dart';
 import 'scan_photo_screen.dart';
@@ -39,6 +41,12 @@ class ScanOptionsSheet {
                   sheetContext,
                   () => ScanPhotoScreen.open(context, ImageSource.camera),
                 ),
+              ),
+              _Option(
+                icon: Icons.restaurant_menu,
+                title: MenuStrings.sheetTitle,
+                subtitle: MenuStrings.sheetSub,
+                onTap: () => openAfterClose(sheetContext, () => MenuScanScreen.open(context)),
               ),
               _Option(
                 icon: Icons.photo_library_outlined,
