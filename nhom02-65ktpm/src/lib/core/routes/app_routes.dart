@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../presentation/screens/shell/main_shell.dart';
+import '../../presentation/screens/auth/auth_gate.dart';
 import '../../presentation/screens/splash/splash_screen.dart';
 
 class AppRoutes {
@@ -16,7 +16,7 @@ class AppRoutes {
       case splash:
         return MaterialPageRoute(builder: (_) => const SplashScreen());
       case home:
-        return MaterialPageRoute(builder: (_) => const MainShell());
+        return MaterialPageRoute(builder: (_) => const AuthGate());
       default:
         return MaterialPageRoute(
           builder: (_) => Scaffold(
