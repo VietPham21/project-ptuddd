@@ -4,8 +4,8 @@ import '../../../core/strings/app_strings.dart';
 import '../diary/diary_screen.dart';
 import '../home/home_screen.dart';
 import '../profile/profile_screen.dart';
+import '../report/report_screen.dart';
 import '../scan/scan_options_sheet.dart';
-import 'placeholder_tab.dart';
 
 /// Khung chính sau khi đăng nhập: 4 tab + nút Quét nổi ở giữa.
 class MainShell extends StatefulWidget {
@@ -22,7 +22,7 @@ class _MainShellState extends State<MainShell> {
   static const List<Widget> _tabs = [
     HomeScreen(),
     DiaryScreen(),
-    PlaceholderTab(title: AppStrings.tabReport, icon: Icons.bar_chart_outlined),
+    ReportScreen(),
     ProfileScreen(),
   ];
 

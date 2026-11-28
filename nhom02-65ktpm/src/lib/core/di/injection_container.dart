@@ -7,6 +7,7 @@ import 'package:google_sign_in/google_sign_in.dart';
 import '../../application/analyze_food_text.dart';
 import '../../application/analyze_meal_photo.dart';
 import '../../application/analyze_menu_photo.dart';
+import '../../application/build_weekly_report.dart';
 import '../../application/confirm_and_save_meal.dart';
 import '../../application/meal_events.dart';
 import '../../application/meal_queries.dart';
@@ -80,6 +81,7 @@ Future<void> initDependencies() async {
   sl.registerLazySingleton<AnalyzeMealPhoto>(() => AnalyzeMealPhoto(sl(), sl(), sl(), sl()));
   sl.registerLazySingleton<AnalyzeFoodText>(() => AnalyzeFoodText(sl(), sl(), sl(), sl()));
   sl.registerLazySingleton<AnalyzeMenuPhoto>(() => AnalyzeMenuPhoto(sl(), sl(), sl()));
+  sl.registerLazySingleton<BuildWeeklyReport>(() => BuildWeeklyReport(sl(), sl()));
 
   // -------------------------------------------------------------
   // 4. State / Services dùng chung (ChangeNotifier)
