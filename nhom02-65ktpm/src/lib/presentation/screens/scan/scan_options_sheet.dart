@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
 
 import '../../../core/strings/diary_strings.dart';
+import '../../../core/strings/scan_strings.dart';
+import '../../../data/ai/image_preparer.dart';
 import '../relog/relog_screen.dart';
 import '../review/review_meal_screen.dart';
+import 'scan_photo_screen.dart';
+import 'text_entry_screen.dart';
 
 /// Bottom sheet mở từ nút Quét (FAB) ở giữa thanh điều hướng.
 class ScanOptionsSheet {
@@ -19,7 +23,7 @@ class ScanOptionsSheet {
       context: context,
       showDragHandle: true,
       builder: (sheetContext) => SafeArea(
-        child: Padding(
+        child: SingleChildScrollView(
           padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
           child: Column(
             mainAxisSize: MainAxisSize.min,
@@ -27,6 +31,34 @@ class ScanOptionsSheet {
             children: [
               Text(ScanSheetStrings.title, style: Theme.of(sheetContext).textTheme.titleLarge),
               const SizedBox(height: 8),
+              _Option(
+                icon: Icons.photo_camera_outlined,
+                title: ScanStrings.scanMeal,
+                subtitle: ScanStrings.scanMealSub,
+                onTap: () => openAfterClose(
+                  sheetContext,
+                  () => ScanPhotoScreen.open(context, ImageSource.camera),
+                ),
+              ),
+              _Option(
+                icon: Icons.photo_library_outlined,
+                title: ScanStrings.fromGallery,
+                subtitle: ScanStrings.fromGallerySub,
+                onTap: () => openAfterClose(
+                  sheetContext,
+                  () => ScanPhotoScreen.open(context, ImageSource.gallery),
+                ),
+              ),
+              _Option(
+                icon: Icons.keyboard_outlined,
+                title: ScanStrings.typeName,
+                subtitle: ScanStrings.typeNameSub,
+                onTap: () => openAfterClose(
+                  sheetContext,
+                  () => Navigator.of(context)
+                      .push(MaterialPageRoute(builder: (_) => const TextEntryScreen())),
+                ),
+              ),
               _Option(
                 icon: Icons.replay,
                 title: ScanSheetStrings.relog,
